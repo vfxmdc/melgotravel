@@ -1,0 +1,202 @@
+.faqSection {
+  padding: 200px 200px 100px;
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  background-color: #000;
+  color: white;
+  position: relative;
+
+  .container {
+    max-width: 1400px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 4fr 6fr;
+    gap: 80px;
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .subtitle {
+        font-size: 14px;
+        font-weight: 500;
+        color: #ef4444;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        margin-bottom: 15px;
+      }
+
+      .title {
+        font-size: 4.5vw;
+        font-weight: 300;
+        margin: 0;
+        color: #ffffff; // White
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+      }
+
+      .description {
+        font-size: 1.15rem;
+        font-weight: 300;
+        color: #999; // Grey
+        margin: 25px 0 0 0;
+        line-height: 1.5;
+      }
+    }
+
+    .accordionContainer {
+      display: flex;
+      flex-direction: column;
+
+      .item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 30px 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:first-of-type {
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        &:hover {
+          .questionRow {
+            .question {
+              color: #ef4444;
+              transform: translateX(5px);
+            }
+            .iconContainer {
+              background-color: #ef4444;
+              color: white;
+            }
+          }
+        }
+
+        .questionRow {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 20px;
+
+          .question {
+            font-size: 20px;
+            font-weight: 400;
+            color: #ffffff;
+            margin: 0;
+            transition: all 0.3s cubic-bezier(0.76, 0, 0.24, 1);
+          }
+
+          .iconContainer {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            transition: all 0.3s cubic-bezier(0.76, 0, 0.24, 1);
+
+            .arrowIcon {
+              transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+            }
+          }
+        }
+
+        .answerRow {
+          overflow: hidden;
+
+          .answer {
+            font-size: 15px;
+            font-weight: 300;
+            color: #999;
+            line-height: 1.6;
+            margin: 20px 0 0 0;
+            max-width: 90%;
+          }
+        }
+      }
+
+      .itemOpen {
+        .questionRow {
+          .question {
+            color: #ef4444;
+          }
+          .iconContainer {
+            background-color: #ef4444;
+            color: white;
+            border-color: #ef4444;
+
+            .arrowIcon {
+              transform: rotate(180deg);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Media Queries for Responsiveness
+@media (max-width: 1200px) {
+  .faqSection {
+    padding: 150px 80px 80px;
+    margin-top: 0;
+
+    .container {
+      grid-template-columns: 1fr;
+      gap: 50px;
+
+      .sidebar {
+        .title {
+          font-size: 5.5vw;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .faqSection {
+    padding: 100px 24px 60px;
+    margin-top: 0;
+
+    .container {
+      gap: 40px;
+
+      .sidebar {
+        .title {
+          font-size: 32px;
+        }
+        .description {
+          font-size: 1rem;
+          margin-top: 15px;
+        }
+      }
+
+      .accordionContainer {
+        .item {
+          padding: 24px 0;
+
+          .questionRow {
+            .question {
+              font-size: 17px;
+            }
+            .iconContainer {
+              width: 34px;
+              height: 34px;
+            }
+          }
+
+          .answerRow {
+            .answer {
+              font-size: 14px;
+              max-width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+}

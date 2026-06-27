@@ -1,0 +1,153 @@
+.ctaSection {
+  padding: 200px 200px 100px;
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  background: #000;
+
+  .bannerContainer {
+    max-width: 1400px;
+    width: 100%;
+    background-color: transparent;
+    color: white;
+    border-radius: 40px;
+    padding: 100px 40px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+
+    .bgOverlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(69, 92, 233, 0.15) 0%, rgba(0, 0, 0, 0) 80%);
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      .tagline {
+        font-size: 13px;
+        font-weight: 500;
+        color: #a2b2fc;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        margin-bottom: 20px;
+      }
+
+      .headline {
+        font-size: 4.5vw;
+        font-weight: 300;
+        margin: 0 0 20px 0;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+      }
+
+      .description {
+        font-size: 1.2rem;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.7);
+        max-width: 600px;
+        line-height: 1.6;
+        margin: 0 0 40px 0;
+      }
+
+      .buttonsGroup {
+        display: flex;
+        gap: 20px;
+
+        .primaryBtn {
+          background-color: #ef4444 !important;
+          border-color: #ef4444 !important;
+          color: white !important;
+        }
+
+        .secondaryBtn {
+          background-color: rgba(255, 255, 255, 0.1) !important;
+          border-color: rgba(255, 255, 255, 0.15) !important;
+          backdrop-filter: blur(10px);
+          color: white !important;
+
+          .darkText {
+            color: white;
+            font-weight: 400;
+            transition: color 0.4s ease;
+          }
+
+          &:hover {
+            .darkText {
+              color: #1c1d20;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Media Queries for Responsiveness
+@media (max-width: 1200px) {
+  .ctaSection {
+    padding: 150px 80px 80px;
+    margin-top: 0;
+
+    .bannerContainer {
+      padding: 80px 40px;
+
+      .content {
+        .headline {
+          font-size: 5.5vw;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .ctaSection {
+    padding: 100px 24px 60px;
+    margin-top: 0;
+
+    .bannerContainer {
+      padding: 60px 24px;
+      border-radius: 28px;
+
+      .content {
+        .headline {
+          font-size: 32px;
+        }
+
+        .description {
+          font-size: 1rem;
+          margin-bottom: 30px;
+        }
+
+        .buttonsGroup {
+          flex-direction: column;
+          gap: 12px;
+          width: 100%;
+          max-width: 280px;
+
+          & > div {
+            width: 100%;
+            padding: 12px 0;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,240 @@
+.destinationsSection {
+  padding: 100px 200px;
+  margin-top: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #000000;
+  position: relative;
+  overflow: hidden;
+
+  .backgroundContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .header {
+    max-width: 1400px;
+    width: 100%;
+    margin-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .subtitle {
+      font-size: 14px;
+      font-weight: 500;
+      color: #ef4444;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 15px;
+    }
+
+    .title {
+      font-size: 4.5vw;
+      font-weight: 300;
+      margin: 0;
+      color: white;
+      letter-spacing: -0.02em;
+    }
+
+    .introText {
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 600px;
+      margin: 20px 0 0 0;
+      line-height: 1.5;
+    }
+  }
+
+  .grid {
+    max-width: 1400px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    position: relative;
+    z-index: 1;
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1), box-shadow 0.4s ease;
+
+      &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+
+        .image {
+          transform: scale(1.06);
+        }
+
+        .exploreBtn {
+          p {
+            color: white !important;
+          }
+        }
+      }
+
+      .imageWrapper {
+        position: relative;
+        width: 100%;
+        height: 250px;
+        overflow: hidden;
+
+        .image {
+          object-fit: cover;
+          transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .priceTag {
+          position: absolute;
+          bottom: 20px;
+          right: 20px;
+          background: rgba(20, 21, 22, 0.75);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: white;
+          padding: 8px 16px;
+          border-radius: 30px;
+          font-size: 14px;
+          font-weight: 500;
+          z-index: 1;
+        }
+      }
+
+      .info {
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+
+        .country {
+          font-size: 12px;
+          font-weight: 500;
+          color: #ef4444;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          margin-bottom: 8px;
+          display: block;
+        }
+
+        .name {
+          font-size: 26px;
+          font-weight: 400;
+          margin: 0 0 12px 0;
+          color: white;
+        }
+
+        .description {
+          font-size: 14px;
+          font-weight: 300;
+          color: rgba(255, 255, 255, 0.6);
+          line-height: 1.6;
+          margin: 0 0 24px 0;
+          flex-grow: 1;
+        }
+
+        .footer {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+
+          .exploreBtn {
+            padding: 10px 30px !important;
+            border-radius: 20px !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+
+            p {
+              font-size: 14px;
+              font-weight: 400;
+              color: white;
+            }
+          }
+
+        }
+      }
+    }
+  }
+}
+
+// Media Queries for Responsiveness
+@media (max-width: 1200px) {
+  .destinationsSection {
+    padding: 0 80px;
+    margin-top: 150px;
+
+    .header {
+      .title {
+        font-size: 5.5vw;
+      }
+    }
+
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .destinationsSection {
+    padding: 0 24px;
+    margin-top: 100px;
+
+    .header {
+      margin-bottom: 40px;
+
+      .title {
+        font-size: 32px;
+      }
+
+      .introText {
+        font-size: 1rem;
+        margin-top: 15px;
+      }
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+
+      .card {
+        .imageWrapper {
+          height: 220px;
+        }
+
+        .info {
+          padding: 24px;
+        }
+      }
+    }
+  }
+}
+.destinationsSection {
+  position: relative;
+  overflow: hidden;
+}
+
+.backgroundContainer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.header,
+.grid {
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,82 @@
+.slidingImages {
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+    position: relative;
+    padding: 100px 0;
+    background-color: #000;
+    z-index: 1;
+    overflow: hidden;
+
+    .sliderContainer {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .slider {
+        display: flex;
+        position: relative;
+        width: max-content;
+        gap: 0;
+
+        .row {
+            display: flex;
+            gap: 3vw;
+            padding-right: 3vw; // Match gap for seamless loop
+        }
+
+        .project {
+            width: 20vw;
+            height: 12vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, background 0.3s ease;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.08);
+                transform: scale(1.05);
+            }
+
+            .imageContainer {
+                position: relative;
+                width: 70%;
+                height: 70%;
+                
+                img {
+                    object-fit: contain; // Logos should be contained
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .slidingImages {
+        padding: 60px 0;
+        gap: 5vw;
+
+        .slider {
+            .row {
+                gap: 5vw;
+                padding-right: 5vw;
+            }
+
+            .project {
+                width: 45vw; // Larger for mobile
+                height: 25vw;
+                border-radius: 8px;
+
+                .imageContainer {
+                    width: 75%;
+                    height: 75%;
+                }
+            }
+        }
+    }
+}
