@@ -8,6 +8,8 @@
   background: #000;
 
   .header {
+    position: relative;
+    z-index: 2;
     max-width: 1400px;
     width: 100%;
     margin-bottom: 80px;
@@ -43,6 +45,8 @@
   }
 
   .grid {
+    position: relative;
+    z-index: 2;
     max-width: 1400px;
     width: 100%;
     display: grid;

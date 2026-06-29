@@ -32,23 +32,7 @@ export default function Menu() {
         gsap.set(infoRef.current, { yPercent: 100, autoAlpha: 0 });
         gsap.set(titleRef.current, { yPercent: 100, rotateY: 20, scale: 0.2 });
         gsap.set(mediaRef.current, { clipPath: clipPath.top });
-
-        // Scroll Reveal Logic for the Nav Button
-        const scrollTrigger = ScrollTrigger.create({
-            trigger: document.documentElement,
-            start: 0,
-            end: window.innerHeight,
-            onLeave: () => {
-                gsap.to(navRef.current, { scale: 1, duration: 0.4, ease: "power2.out" });
-            },
-            onEnterBack: () => {
-                // Also close menu if it's open when returning to top
-                if (isEnabledRef.current) {
-                    toggleMenu();
-                }
-                gsap.to(navRef.current, { scale: 0, duration: 0.4, ease: "power2.in" });
-            }
-        });
+        gsap.set(navRef.current, { scale: 1 });
 
         // Inner Menu Items Timeline
         const tl = gsap.timeline({
@@ -65,7 +49,6 @@ export default function Menu() {
 
         return () => {
             tl.kill();
-            scrollTrigger.kill();
         };
     }, []);
 
@@ -119,6 +102,31 @@ export default function Menu() {
             });
     };
 
+    const handlePageClick = (page) => {
+        // Close menu first
+        if (isEnabledRef.current) {
+            toggleMenu();
+        }
+
+        // Dispatch custom event for page navigation
+        if (page === "Book Your Trip") {
+            window.location.href = "/book";
+            return;
+        }
+
+        const pageMap = {
+            "Home": "home",
+            "Services": "services",
+            "About": "about",
+        };
+
+        const target = pageMap[page];
+        if (target) {
+            // Dispatch custom event that page.js listens to
+            window.dispatchEvent(new CustomEvent('melgo-navigate', { detail: { page: target } }));
+        }
+    };
+
     return (
         <>
             {/* Absolute positioned Navigation Wrapper */}
@@ -137,8 +145,17 @@ export default function Menu() {
                     <div className="menu_row1">
                         <div className="menu_row">
                             <div className="menu_row_pages">
-                                {["Home", "Book Your Trip", "Services", "About", "Contact"].map((page, i) => (
-                                    <a href={page === "Home" ? "/" : page === "Book Your Trip" ? "/book" : `#${page.toLowerCase()}`} className="menu_link_h2" key={page} ref={(el) => (pagesRef.current[i] = el)}>
+                                {["Home", "Services", "About", "Book Your Trip"].map((page, i) => (
+                                    <a
+                                        href="#"
+                                        className="menu_link_h2"
+                                        key={page}
+                                        ref={(el) => (pagesRef.current[i] = el)}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handlePageClick(page);
+                                        }}
+                                    >
                                         {page}
                                     </a>
                                 ))}

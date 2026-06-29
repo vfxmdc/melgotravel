@@ -108,7 +108,7 @@
     mix-blend-mode: difference;
     color: #fff;
     pointer-events: none;
-    transform: scale(0); /* Hide by default */
+    transform: scale(1); /* Show by default */
 }
 
 .nav_menu_button {

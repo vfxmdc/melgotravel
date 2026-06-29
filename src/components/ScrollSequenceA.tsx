@@ -28,12 +28,40 @@ const ScrollSequenceA: React.FC = () => {
     if (!ctx) return;
 
     const render = () => {
-      const img =
-        imagesRef.current[Math.round(currentFrame.current.frame)];
+      const frameIndex = Math.round(currentFrame.current.frame);
+      let img = imagesRef.current[frameIndex];
 
-      if (!img) return;
-      if (!img.complete) return;
-      if (!img.naturalWidth) return;
+      // Fallback search to find the closest loaded frame to prevent glitching/blank screen
+      if (!img || !img.complete || !img.naturalWidth) {
+        let found = false;
+        // Search outwards from frameIndex to find any loaded frame
+        for (let dist = 1; dist < frameCount; dist++) {
+          const prevIdx = frameIndex - dist;
+          const nextIdx = frameIndex + dist;
+
+          if (
+            prevIdx >= 0 &&
+            imagesRef.current[prevIdx] &&
+            imagesRef.current[prevIdx].complete &&
+            imagesRef.current[prevIdx].naturalWidth
+          ) {
+            img = imagesRef.current[prevIdx];
+            found = true;
+            break;
+          }
+          if (
+            nextIdx < frameCount &&
+            imagesRef.current[nextIdx] &&
+            imagesRef.current[nextIdx].complete &&
+            imagesRef.current[nextIdx].naturalWidth
+          ) {
+            img = imagesRef.current[nextIdx];
+            found = true;
+            break;
+          }
+        }
+        if (!found) return; // Keep current screen or do nothing if absolute zero frames loaded
+      }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -41,11 +69,8 @@ const ScrollSequenceA: React.FC = () => {
       const vRatio = canvas.height / img.height;
       const ratio = Math.max(hRatio, vRatio);
 
-      const centerShiftX =
-        (canvas.width - img.width * ratio) / 2;
-
-      const centerShiftY =
-        (canvas.height - img.height * ratio) / 2;
+      const centerShiftX = (canvas.width - img.width * ratio) / 2;
+      const centerShiftY = (canvas.height - img.height * ratio) / 2;
 
       ctx.drawImage(
         img,
@@ -61,7 +86,8 @@ const ScrollSequenceA: React.FC = () => {
     };
 
     const resizeCanvas = () => {
-      const dpr = window.devicePixelRatio || 1;
+      // Limit DPR to 2 to improve performance on high-end / mobile Retina screens
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
@@ -74,25 +100,87 @@ const ScrollSequenceA: React.FC = () => {
 
     resizeCanvas();
 
-    let loaded = 0;
+    // 1. Immediately load frame 0 so the canvas has something to draw on mount
+    const firstImg = new Image();
+    const firstPadded = String(0).padStart(6, '0');
+    firstImg.src = encodeURI(`/images/vid3frames/frame_${firstPadded}.webp`);
+    firstImg.onload = () => {
+      imagesRef.current[0] = firstImg;
+      render();
+    };
 
-    for (let i = 0; i < frameCount; i++) {
-      const img = new Image();
+    // Helper to load a batch of image indexes with a concurrency limit
+    const loadBatch = async (indices: number[], concurrencyLimit = 4) => {
+      let index = 0;
+      const loadNext = async (): Promise<void> => {
+        if (index >= indices.length) return;
+        const i = indices[index++];
 
-      const padded = String(i).padStart(6, '0');
+        await new Promise<void>((resolve) => {
+          const img = new Image();
+          const padded = String(i).padStart(6, '0');
+          img.src = encodeURI(`/images/vid3frames/frame_${padded}.webp`);
+          img.onload = () => {
+            imagesRef.current[i] = img;
+            // Draw if this frame is currently active
+            const activeFrame = Math.round(currentFrame.current.frame);
+            if (activeFrame === i || (i === 0 && activeFrame === 0)) {
+              render();
+            }
+            resolve();
+          };
+          img.onerror = () => {
+            resolve(); // Don't block the queue on load error
+          };
+        });
 
-      img.src = encodeURI(
-        `/images/vid3frames/frame_${padded}.webp`
-      );
-
-      img.onload = () => {
-        loaded++;
-        imagesRef.current[i] = img;
-        if (i === 0) {
-          render();
-        }
+        return loadNext();
       };
-    }
+
+      const workers = Array.from(
+        { length: Math.min(concurrencyLimit, indices.length) },
+        loadNext
+      );
+      await Promise.all(workers);
+    };
+
+    // 2. IntersectionObserver to trigger sequential & progressive downloading only when near the viewport
+    let isObserverConnected = true;
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        // Disconnect quickly to avoid duplicate invocations
+        if (isObserverConnected) {
+          isObserverConnected = false;
+          observer.disconnect();
+        }
+
+        // Start progressive loading
+        const skeletonIndices: number[] = [];
+        const remainingIndices: number[] = [];
+
+        // Distribute frames: Skeleton (every 3rd frame) and the rest
+        for (let i = 1; i < frameCount; i++) {
+          if (i % 3 === 0) {
+            skeletonIndices.push(i);
+          } else {
+            remainingIndices.push(i);
+          }
+        }
+
+        // Run skeleton loading (fast, max 4 concurrent requests)
+        loadBatch(skeletonIndices, 4).then(() => {
+          // Then run background fill-in loading (low overhead, max 2 concurrent requests)
+          loadBatch(remainingIndices, 2);
+        });
+      }
+    };
+
+    const observer = new IntersectionObserver(observerCallback, {
+      rootMargin: '100% 0px 100% 0px', // Trigger when within 1 viewport height
+    });
+
+    observer.observe(container);
 
     window.addEventListener('resize', resizeCanvas);
 
@@ -125,21 +213,23 @@ const ScrollSequenceA: React.FC = () => {
           start: `${startPos * 100}% top`,
           end: `${(startPos + 0.08) * 100}% top`,
           scrub: 1,
-          toggleActions: "play reverse play reverse"
-        }
+          toggleActions: 'play reverse play reverse',
+        },
       });
 
-      tl.fromTo(el,
+      tl.fromTo(
+        el,
         { opacity: 0, x: index % 2 === 0 ? 50 : -50 },
         { opacity: 1, x: 0 }
       );
 
       // Scroll Float Effect
       const words = el.querySelectorAll('.word');
-      tl.fromTo(words,
+      tl.fromTo(
+        words,
         { y: 20, opacity: 0 },
         { y: 0, opacity: 1, stagger: 0.1, duration: 0.5 },
-        "<"
+        '<'
       );
 
       gsap.to(el, {
@@ -150,7 +240,7 @@ const ScrollSequenceA: React.FC = () => {
           start: `${(endPos - 0.08) * 100}% top`,
           end: `${endPos * 100}% top`,
           scrub: 1,
-        }
+        },
       });
     });
 
@@ -158,6 +248,9 @@ const ScrollSequenceA: React.FC = () => {
       tween.kill();
       ScrollTrigger.getAll().forEach((st) => st.kill());
       window.removeEventListener('resize', resizeCanvas);
+      if (isObserverConnected) {
+        observer.disconnect();
+      }
     };
   }, []);
 
@@ -174,7 +267,7 @@ const ScrollSequenceA: React.FC = () => {
       ref={containerRef}
       style={{
         position: 'relative',
-        height: '1000vh',
+        height: '800vh',
       }}
     >
       <div

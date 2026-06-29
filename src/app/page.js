@@ -1,15 +1,17 @@
 'use client';
 
 import styles from './page.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 import dynamic from 'next/dynamic';
 import Preloader from '../components/Preloader';
 import Landing from '../components/Landing';
-import ScrollSequence from '@/components/ScrollSequence';
+import PillNav from '../components/PillNav/PillNav';
+import PageTransition from '../components/PageTransition';
 
-// Lazy load below-the-fold components for better performance
+// Lazy load components for better performance
+const ScrollSequence = dynamic(() => import('@/components/ScrollSequence'), { ssr: false });
 const Description = dynamic(() => import('../components/Description'), { ssr: false });
 const OurBranches = dynamic(() => import('../components/Our branches'), { ssr: false });
 const PopularDestinations = dynamic(() => import('../components/PopularDestinations'), { ssr: false });
@@ -27,11 +29,21 @@ const Newsletter = dynamic(() => import('../components/Newsletter'), { ssr: fals
 const SlidingImages = dynamic(() => import('../components/SlidingImages'), { ssr: false });
 const Contact = dynamic(() => import('../components/Contact'), { ssr: false });
 
-export default function Home() {
+const navItems = [
+  { label: 'Home', href: 'home' },
+  { label: 'Services', href: 'services' },
+  { label: 'Booking', href: '/book' },
+  { label: 'About', href: 'about' },
+];
 
+export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
+  const [activePage, setActivePage] = useState('home');
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [transitionTarget, setTransitionTarget] = useState(null);
 
   useEffect(() => {
+    document.body.classList.add('loading-screen-active');
     (async () => {
       const Lenis = (await import('lenis')).default;
       const gsap = (await import('gsap')).default;
@@ -59,13 +71,97 @@ export default function Home() {
 
       gsap.ticker.lagSmoothing(0);
 
+      // Store lenis on window so we can reset scroll position on page change
+      window.__lenis = lenis;
+
       setTimeout(() => {
         setIsLoading(false);
+        document.body.classList.remove('loading-screen-active');
         document.body.style.cursor = 'default';
         window.scrollTo(0, 0);
-      }, 1000);
+      }, 1100);
     })();
   }, []);
+
+  const handleNavigate = useCallback((page) => {
+    if (page === activePage || isTransitioning) return;
+
+    setTransitionTarget(page);
+    setIsTransitioning(true);
+
+    // Scroll to top first, then swap content after scroll completes
+    // This prevents the user from seeing the bottom of the new page
+    setTimeout(() => {
+      // Reset scroll position BEFORE rendering new content
+      window.scrollTo(0, 0);
+      if (window.__lenis) {
+        window.__lenis.scrollTo(0, { immediate: true });
+      }
+      // Use requestAnimationFrame to ensure scroll reset is painted before content swap
+      requestAnimationFrame(() => {
+        setActivePage(page);
+      });
+    }, 500);
+  }, [activePage, isTransitioning]);
+
+  // Listen for navigation events from the Menu component
+  useEffect(() => {
+    const handler = (e) => {
+      const page = e.detail?.page;
+      if (page) {
+        handleNavigate(page);
+      }
+    };
+    window.addEventListener('melgo-navigate', handler);
+    return () => window.removeEventListener('melgo-navigate', handler);
+  }, [handleNavigate]);
+
+  const handleTransitionComplete = useCallback(() => {
+    setIsTransitioning(false);
+    setTransitionTarget(null);
+  }, []);
+
+  const renderPage = () => {
+    switch (activePage) {
+      case 'home':
+        return (
+          <>
+            <Landing />
+            <ScrollSequence />
+            <Description />
+            <OurBranches />
+            <PopularDestinations />
+            <Contact />
+          </>
+        );
+      case 'services':
+        return (
+          <>
+            <ScrollSequenceB />
+            <WhyChooseUs />
+            <TravelPackages />
+            <Projects />
+            <TravelProcess />
+            <ScrollSequenceA />
+            <Contact />
+          </>
+        );
+      case 'about':
+        return (
+          <>
+            <TravelStats />
+            <Testimonials />
+            <FAQ />
+            <CTABanner />
+            <Newsletter />
+            <SlidingImages />
+            <Contact />
+          </>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <main className={styles.main}>
@@ -73,31 +169,30 @@ export default function Home() {
         {isLoading && <Preloader />}
       </AnimatePresence>
 
-      <Landing />
+      <AnimatePresence mode="wait">
+        {isTransitioning && (
+          <PageTransition
+            key={transitionTarget}
+            targetPage={transitionTarget}
+            onComplete={handleTransitionComplete}
+          />
+        )}
+      </AnimatePresence>
 
-      <ScrollSequence />
+      <PillNav
+        logo="/images/favicon.ico"
+        logoAlt="Melgo Travel"
+        items={navItems}
+        activeHref={activePage}
+        onNavigate={handleNavigate}
+        ease="power3.easeOut"
+        baseColor="rgba(255,255,255,0.7)"
+        pillColor="#ef4444"
+        hoveredPillTextColor="#ffffff"
+        initialLoadAnimation={true}
+      />
 
-      <Description />
-      <OurBranches />
-      <PopularDestinations />
-
-      <ScrollSequenceB />
-
-
-      <WhyChooseUs />
-      <TravelPackages />
-      <Projects />
-      <TravelProcess />
-
-      <ScrollSequenceA />
-
-      <TravelStats />
-      <Testimonials />
-      <FAQ />
-      <CTABanner />
-      <Newsletter />
-      <SlidingImages />
-      <Contact />
+      {renderPage()}
     </main>
   );
 }

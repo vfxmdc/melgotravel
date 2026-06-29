@@ -4,3 +4,12 @@ body{
     overflow: hidden; /* Hide scrollbars */
     cursor: wait;
 }
+
+body.loading-screen-active .nav,
+body.loading-screen-active .pill-nav-container,
+body.loading-screen-active .header {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

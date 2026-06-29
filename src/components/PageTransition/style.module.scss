@@ -1,0 +1,40 @@
+.pageTransition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 40000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #141516;
+  pointer-events: none;
+
+  svg {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: calc(100% + 300px);
+    path {
+      fill: #141516;
+    }
+  }
+
+  p {
+    display: flex;
+    color: white;
+    font-size: 42px;
+    align-items: center;
+    position: absolute;
+    z-index: 1;
+    span {
+      display: block;
+      width: 10px;
+      height: 10px;
+      background-color: #ef4444;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  }
+}

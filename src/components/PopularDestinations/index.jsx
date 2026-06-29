@@ -12,96 +12,84 @@ const destinations = [
     country: "Algeria",
     description: "اكتشف جمال الجزائر من الصحراء الكبرى إلى السواحل المتوسطية، مع مواقع تاريخية وطبيعة متنوعة وتجارب سياحية فريدة.",
     price: "",
-    image: "/images/destiny/Algiers.jfif"
+    image: "/images/pics/Algiers.jfif"
   },
   {
-    name: "Sousse & Hammamet",
-    country: "Tunisia",
-    description: "استمتع بأجمل الشواطئ المتوسطية والمنتجعات الفاخرة والأجواء التونسية الأصيلة المناسبة لجميع أفراد العائلة.",
+    name: "Bali",
+    country: "Indonesia",
+    description: "جنة استوائية تجمع بين الشواطئ الخلابة والطبيعة الساحرة والثقافة المحلية الغنية.",
     price: "",
-    image: "/images/destiny/Tunis.jfif"
+    image: "/images/pics/bali.jfif"
   },
-  {
-    name: "Makkah & Madinah",
-    country: "Saudi Arabia",
-    description: "رحلات مميزة إلى مكة المكرمة والمدينة المنورة مع أفضل خدمات الإقامة والتنقل لتجربة روحانية متكاملة.",
-    price: "",
-    image: "/images/destiny/makkah.jfif"
-  },
-
-  // Middle East
-
   {
     name: "Dubai",
     country: "United Arab Emirates",
     description: "اكتشف دبي بما تضمه من معالم عالمية، مراكز تسوق فاخرة، وتجارب ترفيهية تناسب جميع الأذواق.",
     price: "",
-    image: "/images/destiny/dubai.jfif"
+    image: "/images/pics/dubai.jfif"
   },
-
-  // Africa
-
   {
     name: "Cairo & Sharm El Sheikh",
     country: "Egypt",
     description: "اجمع بين عراقة الحضارة المصرية وروعة المنتجعات الساحلية والشواطئ الخلابة على البحر الأحمر.",
     price: "",
-    image: "/images/destiny/egypt.jfif"
-  },
-  {
-    name: "Zanzibar",
-    country: "Tanzania",
-    description: "وجهة استوائية ساحرة تتميز بالمياه الفيروزية والشواطئ البيضاء والأجواء الهادئة المثالية للاسترخاء.",
-    price: "",
-    image: "/images/destiny/zanzi.jfif"
-  },
-
-  // Europe
-
-  {
-    name: "Istanbul",
-    country: "Turkey",
-    description: "استمتع بسحر إسطنبول حيث يلتقي التاريخ العريق بالحياة العصرية والأسواق التقليدية الشهيرة.",
-    price: "",
-    image: "/images/destiny/ista.jfif"
-  },
-  {
-    name: "Moscow & Saint Petersburg",
-    country: "Russia",
-    description: "اكتشف روعة المدن الروسية التاريخية ومعالمها الثقافية الفريدة وهندستها المعمارية المبهرة.",
-    price: "",
-    image: "/images/destiny/moscow.jfif"
+    image: "/images/pics/egypt.jfif"
   },
   {
     name: "Rome & Venice",
     country: "Italy",
     description: "استمتع بأجواء إيطاليا الساحرة بين التاريخ العريق والفنون الراقية والمأكولات العالمية الشهيرة.",
     price: "",
-    image: "/images/destiny/ita.jfif"
+    image: "/images/pics/ita.jfif"
   },
-
-  // Asia
-
   {
-    name: "Bali",
-    country: "Indonesia",
-    description: "جنة استوائية تجمع بين الشواطئ الخلابة والطبيعة الساحرة والثقافة المحلية الغنية.",
+    name: "Makkah & Madinah",
+    country: "Saudi Arabia",
+    description: "رحلات مميزة إلى مكة المكرمة والمدينة المنورة مع أفضل خدمات الإقامة والتنقل لتجربة روحانية متكاملة.",
     price: "",
-    image: "/images/destiny/bali.jfif"
+    image: "/images/pics/makkah.jfif"
   },
   {
     name: "Kuala Lumpur & Langkawi",
     country: "Malaysia",
     description: "استكشف ماليزيا بين المدن الحديثة والجزر الاستوائية والطبيعة المذهلة والتجارب المتنوعة.",
     price: "",
-    image: "/images/destiny/mala.jfif"
+    image: "/images/pics/mala.jfif"
+  },
+  {
+    name: "Moscow & Saint Petersburg",
+    country: "Russia",
+    description: "اكتشف روعة المدن الروسية التاريخية ومعالمها الثقافية الفريدة وهندستها المعمارية المبهرة.",
+    price: "",
+    image: "/images/pics/moscow.jfif"
+  },
+  {
+    name: "Sousse & Hammamet",
+    country: "Tunisia",
+    description: "استمتع بأجمل الشواطئ المتوسطية والمنتجعات الفاخرة والأجواء التونسية الأصيلة المناسبة لجميع أفراد العائلة.",
+    price: "",
+    image: "/images/pics/tunis.jfif"
   },
   {
     name: "Hanoi & Ha Long Bay",
     country: "Vietnam",
     description: "اكتشف سحر فيتنام من المدن التاريخية إلى المناظر الطبيعية الخلابة والخليج الشهير عالمياً.",
     price: "",
-    image: "/images/destiny/vietnam.jfif"
+    image: "/images/pics/vietnam.jfif"
+  },
+  {
+    name: "Zanzibar",
+    country: "Tanzania",
+    description: "وجهة استوائية ساحرة تتميز بالمياه الفيروزية والشواطئ البيضاء والأجواء الهادئة المثالية للاسترخاء.",
+    price: "",
+    image: "/images/pics/zanzi.jfif"
+  },
+  {
+    name: "Istanbul",
+    country: "Turkey",
+    description: "استمتع بسحر إسطنبول حيث يلتقي التاريخ العريق بالحياة العصرية والأسواق التقليدية الشهيرة.",
+    price: "",
+    image: "/images/pics/İsta.jfif"
   }
 ];
 
@@ -140,14 +128,14 @@ export default function PopularDestinations() {
     <section ref={ref} className={styles.destinationsSection}>
       <div className={styles.backgroundContainer}>
         <DotField
-          dotRadius={1.2}
-          dotSpacing={22}
+          dotRadius={1.8}
+          dotSpacing={24}
           cursorRadius={400}
-          bulgeStrength={50}
+          bulgeStrength={60}
           glowRadius={300}
-          gradientFrom="rgba(239, 68, 68, 0.5)"
-          gradientTo="rgba(239, 68, 68, 0.1)"
-          glowColor="rgba(239, 68, 68, 0.15)"
+          gradientFrom="rgba(239, 68, 68, 0.8)"
+          gradientTo="rgba(239, 68, 68, 0.2)"
+          glowColor="rgba(239, 68, 68, 0.2)"
         />
       </div>
 

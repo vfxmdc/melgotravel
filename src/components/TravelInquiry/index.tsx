@@ -255,6 +255,15 @@ export default function TravelInquiry() {
       </video>
       <div className={styles.container}>
         <MotionDiv
+          className={styles.header}
+          variants={titleVariants}
+          initial="initial"
+          animate={isInView ? 'animate' : 'initial'}
+        >
+          <h2 className={styles.title}>Fill the form - أدخل معلوماتك</h2>
+        </MotionDiv>
+
+        <MotionDiv
           className={styles.formCard}
           variants={cardVariants}
           initial="initial"

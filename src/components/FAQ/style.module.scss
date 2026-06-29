@@ -8,6 +8,8 @@
   position: relative;
 
   .container {
+    position: relative;
+    z-index: 2;
     max-width: 1400px;
     width: 100%;
     display: grid;
