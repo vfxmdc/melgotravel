@@ -145,12 +145,18 @@
             position: relative;
             
             &::-webkit-calendar-picker-indicator {
-              opacity: 0.7;
+              background-color: rgba(255, 255, 255, 0.08);
+              backdrop-filter: blur(10px);
+              -webkit-backdrop-filter: blur(10px);
+              padding: 6px;
+              border-radius: 6px;
+              border: 1px solid rgba(255, 255, 255, 0.1);
               cursor: pointer;
-              transition: opacity 0.2s ease;
+              transition: all 0.3s ease;
               
               &:hover {
-                opacity: 1;
+                background-color: rgba(255, 255, 255, 0.2);
+                border-color: rgba(239, 68, 68, 0.5); /* Brand red */
               }
             }
           }
@@ -369,29 +375,25 @@
 
 @media (max-width: 768px) {
   .travelInquirySection {
-    padding: 80px 24px;
+    padding: 60px 16px;
 
     .container {
       .header {
-        margin-bottom: 40px;
+        margin-bottom: 30px;
 
         .title {
-          font-size: 32px;
-        }
-
-        .introText {
-          font-size: 1rem;
-          margin-top: 15px;
+          font-size: 24px;
+          text-align: center;
         }
       }
 
       .formCard {
-        padding: 35px 24px;
-        border-radius: 24px;
+        padding: 28px 18px;
+        border-radius: 20px;
 
         .formGrid {
           grid-template-columns: 1fr;
-          gap: 25px;
+          gap: 20px;
         }
 
         .fullWidth, .submitContainer {
@@ -399,9 +401,12 @@
         }
 
         .submitContainer {
+          margin-top: 16px;
+          
           .submitBtn {
             width: 100%;
-            padding: 18px 0;
+            padding: 16px 0;
+            font-size: 14px;
           }
         }
       }

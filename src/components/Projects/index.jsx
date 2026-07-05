@@ -25,7 +25,7 @@ const projects = [
   },
   {
     title: "Turkey Packages",
-    src: "istanbul.jfif",
+    src: "İstanbul.jfif",
     color: "#000000"
   },
   {

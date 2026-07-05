@@ -114,7 +114,7 @@
 .nav_menu_button {
     background-color: var(--secondary);
     color: var(--primary);
-    padding: 2em 4em;
+    padding: 2.4em 4.8em;
     display: flex;
     align-items: center;
     gap: 1em;
@@ -134,8 +134,8 @@
 }
 
 .nav_menu_button_circle {
-    width: 1.6em;
-    height: 1.6em;
+    width: 1.8em;
+    height: 1.8em;
     border-radius: 20em;
     background-color: #ffffff;
     transition: background-color 0.3s ease;

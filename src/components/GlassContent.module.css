@@ -95,12 +95,46 @@
 
 @media (max-width: 768px) {
   .contentCard {
-    max-width: 320px;
-    padding: 2rem;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) translateY(20px) !important;
-    top: auto !important;
-    bottom: 20% !important;
+    width: 90%;
+    max-width: 400px;
+    padding: 1.5rem;
+    border-radius: 20px;
+    border-left: none;
+    border-top: 3px solid #ef4444;
+    text-align: center;
+    
+    /* Center aligning without overriding GSAP transforms */
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 auto !important;
+  }
+
+  .topRight {
+    top: 12%;
+  }
+
+  .midLeft {
+    top: 45%;
+  }
+
+  .bottomRight {
+    top: auto;
+    bottom: 12%;
+  }
+
+  .title {
+    font-size: clamp(1.4rem, 6vw, 2rem);
+    margin-bottom: 0.8rem;
+  }
+
+  .text {
+    font-size: clamp(0.9rem, 4vw, 1rem);
+    line-height: 1.6;
+  }
+
+  .premiumBadge {
+    font-size: 0.7rem;
+    padding: 0.4rem 1rem;
+    margin-bottom: 1rem;
   }
 }

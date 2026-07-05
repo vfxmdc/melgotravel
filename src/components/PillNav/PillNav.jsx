@@ -9,7 +9,7 @@ const PillNav = ({
   items,
   activeHref,
   className = '',
-  ease = 'power3.easeOut',
+  ease = 'power3.out',
   baseColor = 'rgba(255,255,255,0.7)',
   pillColor = '#ef4444',
   hoveredPillTextColor = '#ffffff',
@@ -25,6 +25,17 @@ const PillNav = ({
   const logoTweenRef = useRef(null);
   const navItemsRef = useRef(null);
   const logoRef = useRef(null);
+  const navRef = useRef(null); // Ref for navigation bar container
+
+  // Reset hovered styles for all items when activeHref triggers
+  useEffect(() => {
+    items.forEach((item, i) => {
+      const tl = tlRefs.current[i];
+      if (!tl) return;
+      activeTweenRefs.current[i]?.kill();
+      tl.progress(0);
+    });
+  }, [activeHref, items]);
 
   useEffect(() => {
     const layout = () => {
@@ -34,6 +45,10 @@ const PillNav = ({
         const pill = circle.parentElement;
         const rect = pill.getBoundingClientRect();
         const { width: w, height: h } = rect;
+        
+        // Prevent layout calculation if element is hidden/not ready
+        if (w === 0 || h === 0) return;
+
         const R = ((w * w) / 4 + h * h) / (2 * h);
         const D = Math.ceil(2 * R) + 2;
         const delta = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
@@ -82,32 +97,32 @@ const PillNav = ({
       document.fonts.ready.then(layout).catch(() => { });
     }
 
+    // Set layout measurement points to handle settling after compilation and imports
+    const t1 = setTimeout(layout, 150);
+    const t2 = setTimeout(layout, 600);
+    const t3 = setTimeout(layout, 1500);
+
     if (initialLoadAnimation) {
-      const logo = logoRef.current;
-      const navItems = navItemsRef.current;
-
-      if (logo) {
-        gsap.set(logo, { scale: 0 });
-        gsap.to(logo, {
+      const navEl = navRef.current;
+      if (navEl) {
+        gsap.set(navEl, { y: -30, opacity: 0, scale: 0.95 });
+        gsap.to(navEl, {
+          y: 0,
+          opacity: 1,
           scale: 1,
-          duration: 0.6,
+          duration: 0.8,
           delay: 1.2,
-          ease
-        });
-      }
-
-      if (navItems) {
-        gsap.set(navItems, { width: 0, overflow: 'hidden' });
-        gsap.to(navItems, {
-          width: 'auto',
-          duration: 0.6,
-          delay: 1.2,
-          ease
+          ease: 'power3.out'
         });
       }
     }
 
-    return () => window.removeEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
   }, [items, ease, initialLoadAnimation]);
 
   const handleEnter = i => {
@@ -169,7 +184,7 @@ const PillNav = ({
 
   return (
     <div className="pill-nav-container">
-      <nav className={`pill-nav ${className}`} aria-label="Primary" style={cssVars}>
+      <nav ref={navRef} className={`pill-nav ${className}`} aria-label="Primary" style={cssVars}>
         <a
           className="pill-logo"
           href="#"

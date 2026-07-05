@@ -109,7 +109,7 @@ export default function Menu() {
         }
 
         // Dispatch custom event for page navigation
-        if (page === "Book Your Trip") {
+        if (page === "Book Your Trip" || page === "Booking") {
             window.location.href = "/book";
             return;
         }
@@ -145,7 +145,7 @@ export default function Menu() {
                     <div className="menu_row1">
                         <div className="menu_row">
                             <div className="menu_row_pages">
-                                {["Home", "Services", "About", "Book Your Trip"].map((page, i) => (
+                                {["Home", "Services", "Booking", "About", "Book Your Trip"].map((page, i) => (
                                     <a
                                         href="#"
                                         className="menu_link_h2"

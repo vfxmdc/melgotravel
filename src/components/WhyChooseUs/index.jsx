@@ -6,50 +6,60 @@ import Beams from '../Beams/Beams';
 
 const features = [
   {
-    title: "أفضل العروض والأسعار التنافسية",
-    description: "نقدم لكم أفضل العروض والأسعار التنافسية لتناسب جميع الميزانيات.",
+    title: "أفضل الأسعار",
+    description: "نقدم أفضل الأسعار التنافسية التي تناسب جميع الميزانيات.",
     icon: (
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M12 8v8M8 12h8"/>
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 8v8M8 12h8" />
       </svg>
     )
   },
   {
-    title: "حجوزات فنادق موثوقة ومضمونة",
-    description: "رحلة إيمانية مميزة مع إقامة مريحة وخدمات عالية الجودة.",
+    title: "الأفضل في خدمات الحج و العمرة",
+    description: "خدمات متكاملة لتنظيم رحلات الحج والعمرة بأفضل جودة وراحة.",
     icon: (
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+      </svg>
+    )
+  },
+  {
+    title: "حجوزات فنادق و تذاكر طيران و الباخرة",
+    description: "نقوم بحجز الفنادق، تذاكر الطيران، والرحلات البحرية بكل سهولة وموثوقية.",
+    icon: (
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+      </svg>
+    )
+  },
+  {
+    title: "تقديم ملف الفيزا لمختلف الرحلات",
+    description: "مساعدة في تجهيز وتقديم ملفات التأشيرة لجميع أنواع الرحلات.",
+    icon: (
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <path d="M14 2v6h6" />
       </svg>
     )
   },
   {
     title: "دعم ومتابعة قبل وأثناء الرحلة",
-    description: "فريقنا معك دائماً لضمان راحتك طوال فترة إقامتك.",
+    description: "فريقنا معك دائماً لضمان راحتك قبل وأثناء الرحلة.",
     icon: (
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-        <circle cx="12" cy="10" r="1"/>
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        <circle cx="12" cy="10" r="1" />
       </svg>
     )
   },
   {
     title: "برامج سياحية متنوعة تناسب الجميع",
-    description: "برامج سياحية مختارة بعناية لتوفير الراحة والجودة.",
+    description: "برامج سياحية مختارة بعناية لتناسب جميع الأذواق.",
     icon: (
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-    )
-  },
-  {
-    title: "خبرة واحترافية في تنظيم الرحلات",
-    description: "نؤمن أن السفر تجربة تصنع أجمل الذكريات.",
-    icon: (
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
       </svg>
     )
   }
@@ -96,7 +106,7 @@ export default function WhyChooseUs() {
           rotation={10}
         />
       </div>
-      <motion.div 
+      <motion.div
         className={styles.header}
         variants={titleVariants}
         initial="initial"
@@ -109,15 +119,15 @@ export default function WhyChooseUs() {
         </p>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         className={styles.grid}
         variants={containerVariants}
         initial="initial"
         animate={isInView ? "animate" : "initial"}
       >
         {features.map((feature, i) => (
-          <motion.div 
-            key={i} 
+          <motion.div
+            key={i}
             className={styles.card}
             variants={cardVariants}
           >

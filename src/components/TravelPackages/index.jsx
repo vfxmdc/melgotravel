@@ -45,7 +45,7 @@ const packages = [
     rating: "4.8",
     reviews: "112",
     price: "130000,00 DZD",
-    image: "/images/istanbul.jfif",
+    image: "/images/İstanbul.jfif",
     features: ["Budo Hotel Istanbul", "Klas Hotel Istanbul", "Trend Hotel Istanbul", "سحر إسطنبول حيث يلتقي الشرق بالغرب"]
   }
 ];

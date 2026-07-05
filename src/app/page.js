@@ -27,12 +27,17 @@ const FAQ = dynamic(() => import('../components/FAQ'), { ssr: false });
 const CTABanner = dynamic(() => import('../components/CTABanner'), { ssr: false });
 const Newsletter = dynamic(() => import('../components/Newsletter'), { ssr: false });
 const SlidingImages = dynamic(() => import('../components/SlidingImages'), { ssr: false });
-const Contact = dynamic(() => import('../components/Contact'), { ssr: false });
+const Contact = dynamic(() => import('../components/Contact'), {
+  ssr:
+    false
+});
+const FlightBooking = dynamic(() => import('../components/FlightBooking'), { ssr: false });
 
 const navItems = [
   { label: 'Home', href: 'home' },
   { label: 'Services', href: 'services' },
-  { label: 'Booking', href: '/book' },
+  { label: 'Booking', href: 'Booking' },
+  { label: 'Reservations', href: '/book' },
   { label: 'About', href: 'about' },
 ];
 
@@ -83,8 +88,21 @@ export default function Home() {
     })();
   }, []);
 
-  const handleNavigate = useCallback((page) => {
-    if (page === activePage || isTransitioning) return;
+  const handleNavigate = useCallback((page, scrollToId) => {
+    if (isTransitioning) return;
+
+    if (page === activePage) {
+      if (scrollToId) {
+        const el = document.getElementById(scrollToId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+          if (window.__lenis) {
+            window.__lenis.scrollTo(el, { duration: 1.5 });
+          }
+        }
+      }
+      return;
+    }
 
     setTransitionTarget(page);
     setIsTransitioning(true);
@@ -100,16 +118,30 @@ export default function Home() {
       // Use requestAnimationFrame to ensure scroll reset is painted before content swap
       requestAnimationFrame(() => {
         setActivePage(page);
+
+        if (scrollToId) {
+          // Wait for mount and scroll to element
+          setTimeout(() => {
+            const el = document.getElementById(scrollToId);
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth' });
+              if (window.__lenis) {
+                window.__lenis.scrollTo(el, { duration: 1.5 });
+              }
+            }
+          }, 350);
+        }
       });
     }, 500);
   }, [activePage, isTransitioning]);
 
-  // Listen for navigation events from the Menu component
+  // Listen for navigation events from key points
   useEffect(() => {
     const handler = (e) => {
       const page = e.detail?.page;
+      const scrollToId = e.detail?.scrollToId;
       if (page) {
-        handleNavigate(page);
+        handleNavigate(page, scrollToId);
       }
     };
     window.addEventListener('melgo-navigate', handler);
@@ -119,6 +151,16 @@ export default function Home() {
   const handleTransitionComplete = useCallback(() => {
     setIsTransitioning(false);
     setTransitionTarget(null);
+
+    // Recalculate ScrollTriggers for the new page layout
+    (async () => {
+      try {
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+        ScrollTrigger.refresh();
+      } catch (err) {
+        console.error("ScrollTrigger refresh error:", err);
+      }
+    })();
   }, []);
 
   const renderPage = () => {
@@ -129,16 +171,17 @@ export default function Home() {
             <Landing />
             <ScrollSequence />
             <Description />
-            <OurBranches />
             <PopularDestinations />
+            <OurBranches />
+            <SlidingImages />
             <Contact />
           </>
         );
       case 'services':
         return (
           <>
-            <ScrollSequenceB />
             <WhyChooseUs />
+            <ScrollSequenceB />
             <TravelPackages />
             <Projects />
             <TravelProcess />
@@ -146,15 +189,20 @@ export default function Home() {
             <Contact />
           </>
         );
+      case 'Booking':
+        return (
+          <>
+            <FlightBooking />
+          </>
+        );
       case 'about':
         return (
           <>
+            <FAQ />
             <TravelStats />
             <Testimonials />
-            <FAQ />
             <CTABanner />
             <Newsletter />
-            <SlidingImages />
             <Contact />
           </>
         );

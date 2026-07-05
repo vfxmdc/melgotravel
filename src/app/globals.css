@@ -1,8 +1,25 @@
 
-body{
-    margin: 0px;
-    overflow: hidden; /* Hide scrollbars */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: clip;
+    -webkit-overflow-scrolling: touch;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: clip;
     cursor: wait;
+    background: #000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body.loading-screen-active {
+  overflow: hidden !important;
 }
 
 body.loading-screen-active .nav,

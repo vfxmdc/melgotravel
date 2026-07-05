@@ -105,7 +105,11 @@ export default function Home() {
             className={styles.primaryBtn}
             backgroundColor="#ef4444"
             onClick={() => {
-              document.getElementById('travel-packages')?.scrollIntoView({ behavior: 'smooth' });
+              window.dispatchEvent(
+                new CustomEvent("melgo-navigate", {
+                  detail: { page: "services", scrollToId: "travel-packages" }
+                })
+              );
             }}
           >
             <p>See my trips</p>

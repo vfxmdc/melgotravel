@@ -76,6 +76,11 @@
   transition: background 0.3s ease;
   border: none;
   outline: none;
+  /* Fix overflow clipping anti-aliasing during child animations */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .pill .hover-circle {
@@ -85,6 +90,7 @@
   background: var(--pill-bg, #ef4444);
   pointer-events: none;
   z-index: 0;
+  will-change: transform;
 }
 
 .label-stack {
@@ -104,6 +110,7 @@
   color: var(--base, rgba(255,255,255,0.7));
   white-space: nowrap;
   transition: color 0.3s ease;
+  will-change: transform;
 }
 
 .pill-label-hover {
@@ -118,6 +125,7 @@
   color: var(--hover-text, #ffffff);
   white-space: nowrap;
   pointer-events: none;
+  will-change: transform;
 }
 
 .pill.is-active {
@@ -137,9 +145,6 @@
   background: rgba(239, 68, 68, 0.25);
 }
 
-.pill:not(.is-active):hover {
-  background: rgba(255, 255, 255, 0.06);
-}
 
 /* Mobile menu button - not used since nav is hidden on mobile */
 .mobile-menu-button {

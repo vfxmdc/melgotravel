@@ -10,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 const ScrollSequenceA: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const imagesRef = useRef<HTMLImageElement[]>([]);
@@ -20,8 +21,9 @@ const ScrollSequenceA: React.FC = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
+    const stickyEl = stickyRef.current;
 
-    if (!canvas || !container) return;
+    if (!canvas || !container || !stickyEl) return;
 
     const ctx = canvas.getContext('2d');
 
@@ -31,10 +33,8 @@ const ScrollSequenceA: React.FC = () => {
       const frameIndex = Math.round(currentFrame.current.frame);
       let img = imagesRef.current[frameIndex];
 
-      // Fallback search to find the closest loaded frame to prevent glitching/blank screen
       if (!img || !img.complete || !img.naturalWidth) {
         let found = false;
-        // Search outwards from frameIndex to find any loaded frame
         for (let dist = 1; dist < frameCount; dist++) {
           const prevIdx = frameIndex - dist;
           const nextIdx = frameIndex + dist;
@@ -60,7 +60,7 @@ const ScrollSequenceA: React.FC = () => {
             break;
           }
         }
-        if (!found) return; // Keep current screen or do nothing if absolute zero frames loaded
+        if (!found) return;
       }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -86,7 +86,6 @@ const ScrollSequenceA: React.FC = () => {
     };
 
     const resizeCanvas = () => {
-      // Limit DPR to 2 to improve performance on high-end / mobile Retina screens
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
       canvas.width = window.innerWidth * dpr;
@@ -100,7 +99,7 @@ const ScrollSequenceA: React.FC = () => {
 
     resizeCanvas();
 
-    // 1. Immediately load frame 0 so the canvas has something to draw on mount
+    // 1. Immediately load frame 0
     const firstImg = new Image();
     const firstPadded = String(0).padStart(6, '0');
     firstImg.src = encodeURI(`/images/vid3frames/frame_${firstPadded}.webp`);
@@ -122,7 +121,6 @@ const ScrollSequenceA: React.FC = () => {
           img.src = encodeURI(`/images/vid3frames/frame_${padded}.webp`);
           img.onload = () => {
             imagesRef.current[i] = img;
-            // Draw if this frame is currently active
             const activeFrame = Math.round(currentFrame.current.frame);
             if (activeFrame === i || (i === 0 && activeFrame === 0)) {
               render();
@@ -130,7 +128,7 @@ const ScrollSequenceA: React.FC = () => {
             resolve();
           };
           img.onerror = () => {
-            resolve(); // Don't block the queue on load error
+            resolve();
           };
         });
 
@@ -144,45 +142,32 @@ const ScrollSequenceA: React.FC = () => {
       await Promise.all(workers);
     };
 
-    // 2. IntersectionObserver to trigger sequential & progressive downloading only when near the viewport
-    let isObserverConnected = true;
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      const [entry] = entries;
-      if (entry.isIntersecting) {
-        // Disconnect quickly to avoid duplicate invocations
-        if (isObserverConnected) {
-          isObserverConnected = false;
-          observer.disconnect();
-        }
+    // 2. Start progressive loading immediately
+    const skeletonIndices: number[] = [];
+    const remainingIndices: number[] = [];
 
-        // Start progressive loading
-        const skeletonIndices: number[] = [];
-        const remainingIndices: number[] = [];
-
-        // Distribute frames: Skeleton (every 3rd frame) and the rest
-        for (let i = 1; i < frameCount; i++) {
-          if (i % 3 === 0) {
-            skeletonIndices.push(i);
-          } else {
-            remainingIndices.push(i);
-          }
-        }
-
-        // Run skeleton loading (fast, max 4 concurrent requests)
-        loadBatch(skeletonIndices, 4).then(() => {
-          // Then run background fill-in loading (low overhead, max 2 concurrent requests)
-          loadBatch(remainingIndices, 2);
-        });
+    for (let i = 1; i < frameCount; i++) {
+      if (i % 3 === 0) {
+        skeletonIndices.push(i);
+      } else {
+        remainingIndices.push(i);
       }
-    };
+    }
 
-    const observer = new IntersectionObserver(observerCallback, {
-      rootMargin: '100% 0px 100% 0px', // Trigger when within 1 viewport height
+    loadBatch(skeletonIndices, 4).then(() => {
+      loadBatch(remainingIndices, 2);
     });
 
-    observer.observe(container);
-
     window.addEventListener('resize', resizeCanvas);
+
+    // Use ScrollTrigger pin instead of CSS sticky - works with Lenis
+    const pinTrigger = ScrollTrigger.create({
+      trigger: container,
+      start: 'top top',
+      end: 'bottom bottom',
+      pin: stickyEl,
+      pinSpacing: false,
+    });
 
     const tween = gsap.to(currentFrame.current, {
       frame: frameCount - 1,
@@ -223,7 +208,6 @@ const ScrollSequenceA: React.FC = () => {
         { opacity: 1, x: 0 }
       );
 
-      // Scroll Float Effect
       const words = el.querySelectorAll('.word');
       tl.fromTo(
         words,
@@ -245,12 +229,10 @@ const ScrollSequenceA: React.FC = () => {
     });
 
     return () => {
+      pinTrigger.kill();
       tween.kill();
       ScrollTrigger.getAll().forEach((st) => st.kill());
       window.removeEventListener('resize', resizeCanvas);
-      if (isObserverConnected) {
-        observer.disconnect();
-      }
     };
   }, []);
 
@@ -267,14 +249,15 @@ const ScrollSequenceA: React.FC = () => {
       ref={containerRef}
       style={{
         position: 'relative',
-        height: '800vh',
+        height: typeof window !== 'undefined' && window.innerWidth <= 768 ? '400vh' : '800vh',
+        zIndex: 1,
       }}
     >
       <div
+        ref={stickyRef}
         style={{
-          position: 'sticky',
-          top: 0,
-          width: '100vw',
+          position: 'relative',
+          width: '100%',
           height: '100vh',
           overflow: 'hidden',
           background: '#000',
