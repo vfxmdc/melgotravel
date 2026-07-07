@@ -37,7 +37,7 @@ $transition: all 0.4s cubic-bezier(0.76, 0, 0.24, 1);
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 0;
     pointer-events: none;
     
     // Gradient overlay to blend into the site background

@@ -15,7 +15,7 @@ const projects = [
   },
   {
     title: "Tunisia Packages",
-    src: "sidi bou said.jfif",
+    src: "sidi-bou-said.jfif",
     color: "#000000"
   },
   {
@@ -25,7 +25,7 @@ const projects = [
   },
   {
     title: "Turkey Packages",
-    src: "İstanbul.jfif",
+    src: "istanbul.jfif",
     color: "#000000"
   },
   {

@@ -11,6 +11,7 @@ import PillNav from '../components/PillNav/PillNav';
 import PageTransition from '../components/PageTransition';
 
 // Lazy load components for better performance
+import DarkVeil from '../components/DarkVeil/DarkVeil';
 const ScrollSequence = dynamic(() => import('@/components/ScrollSequence'), { ssr: false });
 const Description = dynamic(() => import('../components/Description'), { ssr: false });
 const OurBranches = dynamic(() => import('../components/Our branches'), { ssr: false });
@@ -32,13 +33,16 @@ const Contact = dynamic(() => import('../components/Contact'), {
     false
 });
 const FlightBooking = dynamic(() => import('../components/FlightBooking'), { ssr: false });
+const ClientPortal = dynamic(() => import('../components/ClientPortal'), { ssr: false });
 
 const navItems = [
   { label: 'Home', href: 'home' },
   { label: 'Services', href: 'services' },
   { label: 'Booking', href: 'Booking' },
+  { label: 'Clients', href: 'clients' },
   { label: 'Reservations', href: '/book' },
   { label: 'About', href: 'about' },
+
 ];
 
 export default function Home() {
@@ -174,7 +178,6 @@ export default function Home() {
             <PopularDestinations />
             <OurBranches />
             <SlidingImages />
-            <Contact />
           </>
         );
       case 'services':
@@ -193,6 +196,12 @@ export default function Home() {
         return (
           <>
             <FlightBooking />
+          </>
+        );
+      case 'clients':
+        return (
+          <>
+            <ClientPortal />
           </>
         );
       case 'about':

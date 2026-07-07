@@ -208,7 +208,7 @@ const Beams = memo(({
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setSize(w, h);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setClearColor(0x000000, 1);
+      renderer.setClearColor(0x000000, 0);
       container.appendChild(renderer.domElement);
 
       // Scene

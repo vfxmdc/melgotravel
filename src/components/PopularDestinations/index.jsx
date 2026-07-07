@@ -12,7 +12,7 @@ const destinations = [
     country: "Algeria",
     description: "اكتشف جمال الجزائر من الصحراء الكبرى إلى السواحل المتوسطية، مع مواقع تاريخية وطبيعة متنوعة وتجارب سياحية فريدة.",
     price: "",
-    image: "/images/pics/Algiers.jfif"
+    image: "/images/pics/algiers.jfif"
   },
   {
     name: "Bali",
@@ -89,7 +89,7 @@ const destinations = [
     country: "Turkey",
     description: "استمتع بسحر إسطنبول حيث يلتقي التاريخ العريق بالحياة العصرية والأسواق التقليدية الشهيرة.",
     price: "",
-    image: "/images/pics/İsta.jfif"
+    image: "/images/pics/ista.jfif"
   }
 ];
 

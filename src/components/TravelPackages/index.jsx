@@ -25,7 +25,7 @@ const packages = [
     rating: "4.9",
     reviews: "98",
     price: "47000,00 DZD",
-    image: "/images/sidi bou said.jfif",
+    image: "/images/sidi-bou-said.jfif",
     features: ["Sol Palmeras", "El Kanta", "Hannibal Hotel", "شواطئ ذهبية ومنتجعات فاخرة"]
   },
   {
@@ -45,7 +45,7 @@ const packages = [
     rating: "4.8",
     reviews: "112",
     price: "130000,00 DZD",
-    image: "/images/İstanbul.jfif",
+    image: "/images/istanbul.jfif",
     features: ["Budo Hotel Istanbul", "Klas Hotel Istanbul", "Trend Hotel Istanbul", "سحر إسطنبول حيث يلتقي الشرق بالغرب"]
   }
 ];

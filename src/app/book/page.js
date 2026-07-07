@@ -44,7 +44,7 @@ export default function BookPage() {
         <TravelInquiry />
 
       </div>
-      <Contact />
+     
     </main>
   );
 }
