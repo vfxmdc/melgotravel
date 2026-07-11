@@ -12,7 +12,7 @@ const destinations = [
     country: "Algeria",
     description: "اكتشف جمال الجزائر من الصحراء الكبرى إلى السواحل المتوسطية، مع مواقع تاريخية وطبيعة متنوعة وتجارب سياحية فريدة.",
     price: "",
-    image: "/images/pics/algiers.jfif"
+    image: "/images/pics/Algiers.jfif"
   },
   {
     name: "Bali",

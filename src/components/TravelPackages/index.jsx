@@ -15,7 +15,7 @@ const packages = [
     rating: "5.0",
     reviews: "124",
     price: "299999,00 DZD",
-    image: "/images/mekka.jfif",
+    image: "/images/Mekka.jfif",
     features: ["Diwan Ajyad Hotel – Makkah", "Abraj Al Hossam Hotel – Madinah", "إقامة مريحة وخدمات عالية الجودة", "رحلة إيمانية مميزة"]
   },
   {
@@ -35,7 +35,7 @@ const packages = [
     rating: "4.9",
     reviews: "156",
     price: "230000,00 DZD",
-    image: "/images/cairo.jfif",
+    image: "/images/Cairo.jfif",
     features: ["Rihanna Royal Beach Resort", "Stay Inn Pyramids Hotel", "الأهرامات والبحر الأحمر", "تجربة سياحية فريدة"]
   },
   {

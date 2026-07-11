@@ -10,19 +10,17 @@ const MOCK_FLIGHTS = [
         departure: '07:30',
         arrival: '10:45',
         duration: '3h 15m',
-        price: 285,
-        stops: 'Nonstop',
-        date: '2026-07-15'
+        price: 32000,
+        stops: 'Nonstop'
     },
     {
         id: 2,
-        airline: 'Turkish Airlines',
-        departure: '11:20',
-        arrival: '15:50',
-        duration: '3h 30m',
-        price: 340,
-        stops: 'Nonstop',
-        date: '2026-07-15'
+        airline: 'Tassili Airlines',
+        departure: '09:15',
+        arrival: '10:30',
+        duration: '1h 15m',
+        price: 8500,
+        stops: 'Nonstop'
     },
     {
         id: 3,
@@ -30,19 +28,17 @@ const MOCK_FLIGHTS = [
         departure: '09:00',
         arrival: '11:25',
         duration: '2h 25m',
-        price: 250,
-        stops: 'Nonstop',
-        date: '2026-07-15'
+        price: 45000,
+        stops: 'Nonstop'
     },
     {
         id: 4,
-        airline: 'Tassili Airlines',
-        departure: '13:15',
-        arrival: '15:10',
-        duration: '1h 55m',
-        price: 120,
-        stops: 'Nonstop',
-        date: '2026-07-15'
+        airline: 'Air Algérie',
+        departure: '14:20',
+        arrival: '15:35',
+        duration: '1h 15m',
+        price: 9200,
+        stops: 'Nonstop'
     },
     {
         id: 5,
@@ -50,19 +46,17 @@ const MOCK_FLIGHTS = [
         departure: '18:30',
         arrival: '01:10',
         duration: '4h 40m',
-        price: 430,
-        stops: 'Nonstop',
-        date: '2026-07-15'
+        price: 88000,
+        stops: 'Nonstop'
     },
     {
         id: 6,
         airline: 'Qatar Airways',
-        departure: '21:00',
-        arrival: '08:15',
-        duration: '10h 15m',
-        price: 620,
-        stops: '1 Stop',
-        date: '2026-07-15'
+        departure: '16:00',
+        arrival: '23:45',
+        duration: '6h 45m',
+        price: 95000,
+        stops: '1 Stop'
     }
 ];
 
@@ -89,6 +83,8 @@ export default function FlightBooking() {
     const [departure, setDeparture] = useState('');
     const [arrival, setArrival] = useState('');
     const [departDate, setDepartDate] = useState('');
+    const [returnDate, setReturnDate] = useState('');
+    const [isRoundTrip, setIsRoundTrip] = useState(false);
     const [searched, setSearched] = useState(false);
     const [showDepartureDropdown, setShowDepartureDropdown] = useState(false);
     const [showArrivalDropdown, setShowArrivalDropdown] = useState(false);
@@ -98,21 +94,20 @@ export default function FlightBooking() {
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        if (departure && arrival && departDate) {
+        if (departure && arrival && departDate && (!isRoundTrip || returnDate)) {
             setSearched(true);
             setLoading(true);
             setError(null);
 
-            // Filter mock flights by selected date (always include them)
-            const matchingMocks = MOCK_FLIGHTS.filter(f => f.date === departDate);
             // Normalise mock flights to shared shape
-            const normalisedMocks = matchingMocks.map(f => ({
+            const normalisedMocks = MOCK_FLIGHTS.map(f => ({
+
                 _source: 'mock',
                 airline: f.airline,
                 departureTime: f.departure,
                 arrivalTime: f.arrival,
                 duration: f.duration,
-                price: `${f.price} USD`,
+                price: `${f.price} DZD`,
                 stops: f.stops,
             }));
 
@@ -293,11 +288,35 @@ export default function FlightBooking() {
                             />
                         </div>
 
+                        {/* Round Trip Toggle & Return Date */}
+                        <div className="input-group trip-type-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
+                            <div style={{ display: 'flex', gap: '1rem', color: 'white', fontSize: '0.9rem' }}>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer' }}>
+                                    <input type="radio" checked={!isRoundTrip} onChange={() => setIsRoundTrip(false)} />
+                                    Aller simple
+                                </label>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer' }}>
+                                    <input type="radio" checked={isRoundTrip} onChange={() => setIsRoundTrip(true)} />
+                                    Aller retour
+                                </label>
+                            </div>
+                            {isRoundTrip && (
+                                <input
+                                    style={{ marginTop: '0.3rem' }}
+                                    type="date"
+                                    value={returnDate}
+                                    min={departDate}
+                                    onChange={(e) => setReturnDate(e.target.value)}
+                                    className="date-input"
+                                />
+                            )}
+                        </div>
+
                         {/* Search Button */}
                         <button
                             type="submit"
                             className="search-button"
-                            disabled={!departure || !arrival || !departDate}
+                            disabled={!departure || !arrival || !departDate || (isRoundTrip && !returnDate)}
                         >
                             Search Flights
                         </button>

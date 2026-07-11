@@ -10,7 +10,7 @@ import Rounded from '../../common/RoundedButton';
 const projects = [
   {
     title: "Saudi Arabia Packages",
-    src: "mekka.jfif",
+    src: "Mekka.jfif",
     color: "#1C1D20"
   },
   {
@@ -20,7 +20,7 @@ const projects = [
   },
   {
     title: "Egypt Packages",
-    src: "cairo.jfif",
+    src: "Cairo.jfif",
     color: "#ef4444"
   },
   {
